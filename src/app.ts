@@ -6,8 +6,9 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import { LOG_FORMAT, NODE_ENV, PORT } from './config';
 import { Route } from './interfaces/server.interface';
+import { modelsConn } from './database';
 
-class ApiServer {
+export class ApiServer {
     private app: express.Application;
     private env: string;
     private port: string | number;
@@ -29,7 +30,7 @@ class ApiServer {
     }
 
     private async connectDatabase() {
-        // connect to database
+        await modelsConn.connect()
     }
 
     private initializeMiddlewares() {
@@ -43,7 +44,9 @@ class ApiServer {
     }
     
     private initializeRoutes(routes: Route[]) {
-        // initialize auth and unauth routes
+        for (const route of routes) {
+            this.app.use('/api', route.router);
+        }
     }
 
     private initializeErrorHandling() {
