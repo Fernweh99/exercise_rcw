@@ -54,6 +54,8 @@ export class ApiServer {
     }
 
     public listen() {
+        if (!this.initialized) throw new Error('server not initialized');
+
         this.app.listen(this.port, () => {
             console.info(`=================================`);
             console.info(`======= ENV: ${this.env} =======`);
