@@ -5,4 +5,5 @@ export const {
     NODE_ENV,
     PORT,
     LOG_FORMAT,
+    DATABASE_URL
 } = process.env
