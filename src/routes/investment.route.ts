@@ -1,0 +1,20 @@
+import { Router } from "express";
+import { Route } from "../interfaces/server.interface";
+import { modelsConn } from "../database";
+import { InvestmentController } from "../controller/investment.controller";
+
+const models = modelsConn.getModels()
+
+export class InvestmentRoute implements Route {
+    public path = '/investment';
+    public router = Router();
+
+    constructor() {
+        this.initializeRoutes();
+    }
+
+    private initializeRoutes() {
+        this.router.get(`${this.path}`, InvestmentController.getInvestments);
+        this.router.post(`${this.path}`, InvestmentController.createInvestment);
+    }
+}
