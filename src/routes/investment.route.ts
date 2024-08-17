@@ -15,6 +15,7 @@ export class InvestmentRoute implements Route {
 
     private initializeRoutes() {
         this.router.get(`${this.path}`, InvestmentController.getInvestments);
+        this.router.get(`${this.path}/statistics`, InvestmentController.getInvestmentsStatistics);
         this.router.post(`${this.path}`, InvestmentController.createInvestment);
     }
 }
