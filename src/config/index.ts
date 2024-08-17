@@ -5,5 +5,7 @@ export const {
     NODE_ENV,
     PORT,
     LOG_FORMAT,
-    DATABASE_URL
+    DATABASE_URL,
+    USERNAME,
+    PASSWORD,
 } = process.env
