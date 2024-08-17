@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { Route } from "../interfaces/server.interface";
 import { modelsConn } from "../database";
-import { InvestmentController } from "../controller/investment.controller";
+import { InvestmentController } from "../controllers/investment.controller";
 
 const models = modelsConn.getModels()
 
