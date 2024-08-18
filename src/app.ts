@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import { LOG_FORMAT, NODE_ENV, PORT } from './config';
 import { Route } from './interfaces/server.interface';
 import { modelsConn } from './database';
+import errorMiddleware from './middlewares/error.middleware';
 
 export class ApiServer {
     private app: express.Application;
@@ -50,7 +51,7 @@ export class ApiServer {
     }
 
     private initializeErrorHandling() {
-        // create middleware for manage error
+        this.app.use(errorMiddleware)
     }
 
     public listen() {
