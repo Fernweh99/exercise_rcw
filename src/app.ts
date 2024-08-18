@@ -1,4 +1,5 @@
 import cors from 'cors';
+import { Express } from 'express';
 import express from 'express';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -10,7 +11,7 @@ import { modelsConn } from './database';
 import errorMiddleware from './middlewares/error.middleware';
 
 export class ApiServer {
-    private app: express.Application;
+    private app: Express;
     private env: string;
     private port: string | number;
     private initialized = false;
