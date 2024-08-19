@@ -1,0 +1,262 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'Exercise RCW'
+servers:
+  - url: 'localhost:3000/api'
+tags:
+  - name: Authorization
+    description: Operations about auth
+  - name: Investments
+    description: Operations about investments
+paths:
+  /authorization:
+    get:
+      summary: 'get api token'
+      operationId: getToken
+      tags:
+        - Authorization
+      responses:
+        '200':
+          description: 'return api token'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: number
+        '500':
+          description: 'internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /investments:
+    get:
+      summary: 'get investments'
+      operationId: getInvestments
+      tags:
+        - Investments
+      parameters:
+        - in: header
+          name: api-key
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: 'return list of investments'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                  rows:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InvestmentResponse'
+        '500':
+          description: 'internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post: 
+      summary: 'create investment'
+      operationId: createInvestment
+      tags:
+        - Investments
+      parameters:
+        - in: header
+          name: api-key
+          schema:
+            type: string
+          required: true
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: basic authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvestmentRequest'
+      responses:
+        '200':
+          description: 'return the created investment'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestmentResponse'
+        '400':
+          description: 'bad request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '500':
+          description: 'internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /investments/statistics:
+    get:
+      summary: 'get investments statistics'
+      operationId: getInvestmentsStatistics
+      tags:
+        - Investments
+      parameters:
+        - in: header
+          name: api-key
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: 'return list of investments'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestmentsStatisticsResponse'
+        '500':
+          description: 'internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+components:
+  schemas:
+    InvestmentResponse:
+      type: object
+      properties:
+        id:
+          type: number
+        value:
+          type: number
+        annual_rate: 
+          type: string
+        confirm_at:
+          type: string
+          format: date
+        created_at:
+          type: string
+          format: date
+        updated_at:
+          type: string
+          format: date
+    InvestmentRequest:
+      type: object
+      required:
+        - value
+        - annual_rate
+        - confirm_at
+      properties:
+        value:
+          type: number
+        annual_rate:
+          type: number
+        confirm_at:
+          type: string
+          format: date
+    InvestmentsStatisticsResponse:
+      type: object
+      properties:
+        years:
+          type: array
+          items:
+            type: object
+            properties:
+              average_value:
+                type: string
+              investment_count:
+                type: number
+              year:
+                type: string
+        days:
+          type: array
+          items:
+            type: object
+            properties:
+              average_value:
+                type: string
+              investment_count:
+                type: number
+              day:
+                type: string
+        months:
+          type: array
+          items:
+            type: object
+            properties:
+              average_value:
+                type: string
+              investment_count:
+                type: number
+              month:
+                type: string
+        weeks:
+          type: array
+          items:
+            type: object
+            properties:
+              average_value:
+                type: string
+              investment_count:
+                type: number
+              weeks_start:
+                type: string
+              weeks_end:
+                type: string
+    BadRequestError:
+      type: object
+      required:
+        - code
+        - message
+        - detail
+      properties:
+        code:
+            type: integer
+            enum: [400]
+        detail:
+          type: string
+          enum: ['Error details']
+    NotFoundError:
+      type: object
+      required:
+        - code
+        - message
+        - detail
+      properties:
+        code:
+            type: integer
+            enum: [404]
+        detail:
+          type: string
+          enum: ['Error <EntityName> not found']
+    InternalServerError:
+      type: object
+      required:
+        - code
+        - message
+        - detail
+      properties:
+        code:
+            type: integer
+            enum: [500]
+        detail:
+          type: string
+          enum: ['internal server error']
+  securitySchemes:
+    bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+security:
+    - bearerAuth: []
