@@ -59,7 +59,7 @@ describe('GET api/investments', () => {
         expect(res.body.detail).toEqual('token invalid or already used');
     });
 });
-describe('GET api/statistics', () => {
+describe('GET api/investments/statistics', () => {
     it('should return 401 for missing authorization token', async () => {
         const res = await request(api)
             .get('/api/investments/statistics')
@@ -121,10 +121,10 @@ describe('GET api/statistics', () => {
     });
 });
 
-describe('GET api/statistics', () => {
+describe('POST api/investments', () => {
     it('should return 401 for missing authorization token', async () => {
         const res = await request(api)
-            .get('/api/investments/statistics')
+            .post('/api/investments')
             .send()
             .set('Accept', 'application/json');
         expect(res.statusCode).toEqual(401);
@@ -196,7 +196,7 @@ describe('GET api/statistics', () => {
 
     it('should return 401 for token already used', async () => {
         const res = await request(api)
-            .get('/api/investments/statistics')
+            .post('/api/investments')
             .send()
             .set('Accept', 'application/json')
             .set('api-token', token);
