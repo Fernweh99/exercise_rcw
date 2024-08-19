@@ -13,3 +13,5 @@ How to run this application:
 How to run tests:
 1. use command 'npm run seed' to create fake data
 2. use command 'npm run test' to run all tests
+
+You can consult api on file 'doc/swagger.yaml'
